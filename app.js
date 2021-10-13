@@ -55,6 +55,9 @@ class UI {
 
     const form = document.querySelector("#book-form");
 
+    // Vanish in 3 seconds
+    setTimeout(() => document.querySelector(".alert").remove(), 3000);
+
     container.insertBefore(div, form);
   }
 
