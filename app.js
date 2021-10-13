@@ -68,6 +68,37 @@ class UI {
   }
 }
 
+// STORE CLASS: HANDLES STORAGE
+class Store {
+  // static means we don't have to intentiate store class and we can call static method directly
+  static getBooks() {
+      let books;
+      if(localStorage.getItem('books')===null){
+          books=[]
+
+      }
+      else {
+          books= JSON.parse(localStorage.getItem('books'));
+      }
+      return books;
+  }
+
+ static addBook(book) {
+     const books = Store.getBooks();
+     books.push(book)
+     localStorage.setItem('books',JSON.stringify(books));
+ }
+ static removeBook(isbn) {
+     const books= Store.getBooks();
+     books.forEach((book,index)=>{
+         if(book.isbn===isbn){
+             books.splice(index,1)
+         }
+     });
+     localStorage.setItem('books',JSON.stringify(books))
+ }
+}
+
 // EVENT : DISPLAY BOOKS
 
 document.addEventListener("DOMContentLoaded", UI.displayBooks);
@@ -95,6 +126,9 @@ document.querySelector("#book-form").addEventListener("submit", (e) => {
     // ADD BOOK TO UI
     UI.addBookToList(book);
 
+    // SHOW SUCCESS MESSAGE
+    UI.showAlert("Book Added", "success");
+
     //   CLEAR FIELDS-->
     UI.clearFields();
   }
@@ -103,4 +137,6 @@ document.querySelector("#book-form").addEventListener("submit", (e) => {
 document.querySelector("#book-list").addEventListener("click", (e) => {
   //   console.log(e.target);
   UI.deleteBook(e.target);
+  // SHOW SUCCESS MESSAGE
+  UI.showAlert("Book Removed", "success");
 });
